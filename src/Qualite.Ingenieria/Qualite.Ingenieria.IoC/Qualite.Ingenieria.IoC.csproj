@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper.FluentMap" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.27" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Qualite.Ingenieria.App\Qualite.Ingenieria.App.csproj" />
+    <ProjectReference Include="..\Qualite.Ingenieria.Authentication\Qualite.Ingenieria.Authentication.csproj" />
+    <ProjectReference Include="..\Qualite.Ingenieria.Data\Qualite.Ingenieria.Data.csproj" />
+    <ProjectReference Include="..\Qualite.Ingenieria.Services\Qualite.Ingenieria.Services.csproj" />
+  </ItemGroup>
+
+</Project>
