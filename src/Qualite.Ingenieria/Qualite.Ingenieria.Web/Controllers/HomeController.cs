@@ -19,12 +19,14 @@ namespace Qualite.Ingenieria.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(LoginSignature loginSignature, string returnUrl)
         {
             if (!ModelState.IsValid)
@@ -35,7 +37,7 @@ namespace Qualite.Ingenieria.Web.Controllers
                 {
                     case UserLoginResults.Successful:
                         {
-                            var user = loginSignature.Email.Contains('@') ? 
+                            var user = loginSignature.Email.Contains('@') ?
                                 await _userApp.FindByEmail(loginSignature.Email) : await _userApp.FindByUsername(loginSignature.Email);
 
                             return await _userApp.SignInUserAsync(user, returnUrl, loginSignature.RememberMe);
@@ -53,16 +55,28 @@ namespace Qualite.Ingenieria.Web.Controllers
             return View(loginSignature);
         }
 
-        [HttpGet]
+        [HttpGet]        
         public IActionResult Register()
-        {
+        {            
             return View();
         }
 
         [HttpPost]
-        public IActionResult Register(UserRegistrationSignature userRegistrationSignature)
-        {            
-            return View();
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(UserRegistrationSignature userRegistrationSignature)
+        {
+            UserRegistrationResult result = await _userApp.RegisterUserAsync(userRegistrationSignature);
+
+            if (ModelState.IsValid)
+            {
+                if (result.Success)
+                    RedirectToAction("Home", "Index");
+            }
+
+            foreach (string error in result.Errors)
+                ModelState.AddModelError("", error);
+
+            return View(userRegistrationSignature);
         }
 
         public IActionResult Forgot()

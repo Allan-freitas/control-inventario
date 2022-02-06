@@ -15,12 +15,16 @@ namespace Qualite.Ingenieria.Services.Users
 
         public async Task<long> CreateAsync(User user)
         {
-            return await _unitOfWork.UserRepository.CreateAsync(user);
+            long id = await _unitOfWork.UserRepository.CreateAsync(user);
+            _unitOfWork.Commit();
+            return id;
         }
 
         public async Task<bool> DeleteAsync(long id)
         {
-            return await _unitOfWork.UserRepository.DeleteAsync(id);
+            bool isDeleted = await _unitOfWork.UserRepository.DeleteAsync(id);
+            _unitOfWork.Commit();
+            return isDeleted;
         }
 
         public async Task<IQueryable<User>> FindAllAsync()

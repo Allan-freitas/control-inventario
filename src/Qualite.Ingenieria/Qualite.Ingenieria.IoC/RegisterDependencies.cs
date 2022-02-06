@@ -29,6 +29,7 @@ namespace Qualite.Ingenieria.IoC
             services.Configure<DataBaseSettings>(configuration.GetSection("MysqlSettings"));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserApp, UserApp>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 

@@ -9,11 +9,14 @@ namespace Qualite.Ingenieria.Data.DapperMapper.Users
     {
         public UserMap()
         {
-            ToTable("User");
+            ToTable("USER");
             Map(u => u.Id).ToColumn("Id").IsKey();
             Map(u => u.Email).ToColumn("Email");
             Map(u => u.Name).ToColumn("Name");
+            Map(u => u.Username).ToColumn("Username");
             Map(u => u.Password).ToColumn("Password");
+            Map(u => u.CreatedOn).ToColumn("CreatedOn");
+            Map(u => u.RoleId).ToColumn("Role_Id");
         }
     }
 }

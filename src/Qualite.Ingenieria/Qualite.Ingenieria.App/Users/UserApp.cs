@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Qualite.Ingenieria.App.Model.Users;
 using Qualite.Ingenieria.Domain.Entities.Users;
+using Qualite.Ingenieria.Domain.Helper;
 using Qualite.Ingenieria.Domain.Services.Users;
 
 namespace Qualite.Ingenieria.App.Users
@@ -50,6 +52,51 @@ namespace Qualite.Ingenieria.App.Users
                 return UserLoginResults.WrongPassword;
 
             return UserLoginResults.Successful;
+        }
+
+        public async Task<UserRegistrationResult> RegisterUserAsync(UserRegistrationSignature signature)
+        {
+            UserRegistrationResult result = new();
+
+            if (signature == null)
+            {
+                result.AddError("El formulario debe ser llenado");
+                return result;
+            }
+
+            if (string.IsNullOrEmpty(signature.Email))
+            {
+                result.AddError("El campo de correo electrónico debe ser completado");
+                return result;
+            }
+
+            if (string.IsNullOrEmpty(signature.Username))
+            {
+                result.AddError("El campo de nombre de usuario debe completarse");
+                return result;
+            }
+
+            User user = await _userService.FindByEmail(signature.Email);
+
+            if (user != null)
+            {
+                result.AddError("El usuario ya existe en nuestra base de datos");
+                return result;
+            }
+
+            if (!CommonHelper.IsValidEmail(signature.Email))
+            {
+                result.AddError("Email inválido");
+                return result;
+            }
+
+            User userToStore = new(signature.Name, signature.Username, signature.Email, signature.Password, DateTime.Now, 1);
+
+            string passwordHashed = _passwordHasher.HashPassword(userToStore, signature.Password);
+
+            await _userService.CreateAsync(new User(signature.Name, signature.Username, signature.Email, passwordHashed, DateTime.Now, 1));
+
+            return result;
         }
     }
 }

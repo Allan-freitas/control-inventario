@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Qualite.Ingenieria.App.Model.Users;
 using Qualite.Ingenieria.Domain.Entities.Users;
 
 namespace Qualite.Ingenieria.App.Users
@@ -12,5 +13,7 @@ namespace Qualite.Ingenieria.App.Users
         Task<User> FindByUsername(string username);
 
         Task<User> FindByEmail(string email);
+
+        Task<UserRegistrationResult> RegisterUserAsync(UserRegistrationSignature signature);
     }
 }
